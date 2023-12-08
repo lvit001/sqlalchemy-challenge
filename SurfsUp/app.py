@@ -86,7 +86,8 @@ def tobs():
     # find one year before the most recent date of data
     year_ago = dt.date(2017, 8, 23) - dt.timedelta(days=365)
     # query the data for date and temperature for all dates after the year ago date determined above and for a specific station
-    temp_data = session.query(Measurement.date,Measurement.tobs).filter(Measurement.station == 'USC00519281').filter(Measurement.date >= year_ago).all()
+    temp_data = session.query(Measurement.date,Measurement.tobs).filter(Measurement.station == 'USC00519281').\
+        filter(Measurement.date >= year_ago).all()
     # close the session
     session.close()
     # list comprehension to get a list of dictionaries including the date and temperature
@@ -105,7 +106,27 @@ def start_date(start):
     func.max(Measurement.tobs),
     func.avg(Measurement.tobs)]
     #query for the TMIN, TMAX, and TAVG for the request date and all after
-    temp_query = session.query(*sel).filter(Measurement.date >= start).all()
+    temp_query = session.query(*sel).filter(Measurement.date >= start).group_by(Measurement.date).order_by(Measurement.date).all()
+    # close the session
+    session.close()
+    # list comprehension to get a list of dictionaries including the date, TMIN, TMAX, and TAVG
+    temp_list = [{"Date": result[0], "TMIN": result[1], "TMAX": result[2], "TAVG": result[3]} for result in temp_query]
+    return jsonify(temp_list)
+
+
+@app.route("/api/v1.0/<start>/<end>")
+def start_and_end_date(start, end):
+    # For a specified start, calculate TMIN, TAVG, and TMAX for 
+    # all the dates greater than or equal to the start date.
+
+    # create a variable to contain the data we want to select
+    sel = [Measurement.date,
+    func.min(Measurement.tobs),
+    func.max(Measurement.tobs),
+    func.avg(Measurement.tobs)]
+    #query for the TMIN, TMAX, and TAVG for the request date and all after
+    temp_query = session.query(*sel).filter(Measurement.date >= start).filter(Measurement.date <= end).\
+        group_by(Measurement.date).order_by(Measurement.date).all()
     # close the session
     session.close()
     # list comprehension to get a list of dictionaries including the date, TMIN, TMAX, and TAVG
