@@ -37,6 +37,7 @@ app = Flask(__name__)
 #################################################
 @app.route("/")
 def home():
+    # home page and routes
     return (
         f"Welcome to the Climate API!<br/>"
         f"Available Routes:<br/>"
@@ -49,10 +50,20 @@ def home():
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
+    # provide the precipitation data for the previous year
     year_ago = dt.date(2017, 8, 23) - dt.timedelta(days=365)
     results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >= year_ago).all()
     precipitation_rows = [{"Date": result[0], "Precipitation": result[1]} for result in results]
     return jsonify(precipitation_rows)
+
+
+@app.route("/api/v1.0/stations")
+def stations():
+    # return a list of the stations
+    stations = session.query(Station.station).all()
+    station_rows = [{"Station": station[0]} for station in stations]
+    return jsonify(station_rows)
+
 
 
 if __name__ == "__main__":
