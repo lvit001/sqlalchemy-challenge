@@ -37,7 +37,7 @@
 - ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/1dc2a296-945b-4a43-be43-05a5ff42e020)
 ### Close Session
 - Used `session.close()` to close the session
-## Part 2: Climate API Development
+## Part 2: [Climate API Development](https://github.com/lvit001/sqlalchemy-challenge/blob/main/SurfsUp/app.py)
 ### Imported the following dependencies:
 - ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/3de29094-d31c-460e-b41a-6c38a10e7d0b)
 ### Created a function find a previosu year from a year specified in the arguments
