@@ -38,4 +38,31 @@
 ### Close Session
 - Used `session.close()` to close the session
 ## Part 2: Climate API Development
-###
+### Imported the following dependencies:
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/3de29094-d31c-460e-b41a-6c38a10e7d0b)
+### Created a function find a previosu year from a year specified in the arguments
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/e1a70a69-d25b-40cc-b094-c64504f08b66)
+### Created another function to select columns from a specified table
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/a334f4ad-d330-45b0-a0bf-b2fc22f9ba98)
+### Created a final function to run a list comprehension for the query that find min, max, and avg data after or between certain date(s):
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/80165df9-6b11-44ad-b425-33d95457d8b6)
+### Set up the database with the following series of code:
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/82826741-4491-4fc6-96cd-15ba68b225b2)
+### Flask setup code: 
+- `app = Flask(__name__)`
+### Home page and route list
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/088a1fce-51a0-4417-b463-9fa2a379e5f2)
+### Precipitation Route
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/79e7ee12-68ee-46d0-9a4c-b24e3419e3f6)
+- Used year_func function defined above
+### Stations Route
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/ae1c6ff1-7592-490a-9bd9-1e775c80c343)
+### TOBS Route
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/97a6304a-8d22-4383-a49c-3c3a46608a88)
+- Used year_func function defined above
+### Start Date Only Route
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/72aeb5d3-7ee0-47e3-8695-05689ec572aa)
+- Used select_var and temp_list_func functions defined above
+### Start and End Date Route
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/c356b101-0bac-45f9-9fc4-050c526c1f0d)
+- Used select_var and temp_list_func functions defined above
