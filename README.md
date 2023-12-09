@@ -12,13 +12,7 @@
 - Create a dataframe with the data retrieved from the query and renamed the columns: `df = pd.DataFrame(precipitation_data, columns=["Date","Precipitation"])`
 - Organized the dataframe and set the index to the date: df = `df.sort_values(by="Date",ascending=True)` & `df.set_index(df["Date"], inplace=True)`
 - Created a pandas plot with the data:
-- `df.plot(color='m')`
-- `plt.tight_layout()`
-- `plt.xticks(rotation='vertical')`
-- `plt.xlabel("Date")`
-- `plt.ylabel("Inches")`
-- `plt.show()`
-- Created the below graph displaying precipitation data over time:
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/b7816470-6f49-45da-ac6a-b27b86a7393f)
 - ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/fb19015b-e883-4202-b550-6c4853692b70)
 - Calculated a summary statistics table for the data `df.describe()`
 ### Exploratory Station Analysis
@@ -28,12 +22,7 @@
 - `sel = [func.min(Measurement.tobs),func.max(Measurement.tobs),func.avg(Measurement.tobs)]`
 - `most_active_temps = session.query(*sel).filter(Measurement.station == 'USC00519281').first()`
 - Designed a query to find the tobs over the last year for the most active station, and graphed this data in a histogram:
-- `temp_data = session.query(Measurement.date,Measurement.tobs).filter(Measurement.station == 'USC00519281').filter(Measurement.date >= year_ago).all()`
-- `df = pd.DataFrame(temp_data)`
-- `df.plot.hist(bins=12, color='m')`
-- `plt.xlabel('Temperature')`
-- `plt.ylabel("Frequency")`
-- Populated the below histogram graph:
+- ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/9cbc1957-e9c9-4ba5-ab36-011b02d0efa3)
 - ![image](https://github.com/lvit001/sqlalchemy-challenge/assets/140283164/1dc2a296-945b-4a43-be43-05a5ff42e020)
 ### Close Session
 - Used `session.close()` to close the session
