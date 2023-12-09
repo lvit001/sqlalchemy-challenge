@@ -9,6 +9,22 @@ from sqlalchemy import create_engine, func
 
 from flask import Flask, jsonify
 
+# when called, this function returns a date one year before the date in the arguments
+def year_func(x,y,z):
+    return dt.date(x,y,z) - dt.timedelta(days=365)
+
+# when called, this function will retrieve the requested columns in the class specified in the argument
+def select_var(x):
+    return [x.date,
+    func.min(x.tobs),
+    func.max(x.tobs),
+    func.avg(x.tobs)]
+
+# when called, this function will run the query previously created through a list comprehension to create a list of dictionaries
+def temp_list_func(x):
+    temp_list = [{"Date": result[0], "TMIN": result[1], "TMAX": result[2], "TAVG": result[3]} for result in x]
+    return temp_list
+
 #################################################
 # Database Setup
 #################################################
@@ -55,8 +71,8 @@ def home():
 def precipitation():
     # provide the precipitation data for the previous year
 
-    # find one year before the most recent date of data
-    year_ago = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+    # call function to find one year before the most recent date of data
+    year_ago = year_func(2017,8,23)
     # query the data for date and precipitation for all dates after the year ago date determined above
     results = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date >= year_ago).all()
     # close the session
@@ -83,8 +99,8 @@ def stations():
 def tobs():
     # Return a JSON list of temperature observations for the previous year.
 
-    # find one year before the most recent date of data
-    year_ago = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+    # call function to find one year before the most recent date of data
+    year_ago = year_func(2017,8,23)
     # query the data for date and temperature for all dates after the year ago date determined above and for a specific station
     temp_data = session.query(Measurement.date,Measurement.tobs).filter(Measurement.station == 'USC00519281').\
         filter(Measurement.date >= year_ago).all()
@@ -100,18 +116,14 @@ def start_date(start):
     # For a specified start, calculate TMIN, TAVG, and TMAX for 
     # all the dates greater than or equal to the start date.
 
-    # create a variable to contain the data we want to select
-    sel = [Measurement.date,
-    func.min(Measurement.tobs),
-    func.max(Measurement.tobs),
-    func.avg(Measurement.tobs)]
+    # call function to create a variable to contain the data we want to select
+    sel = select_var(Measurement)
     #query for the TMIN, TMAX, and TAVG for the request date and all after
     temp_query = session.query(*sel).filter(Measurement.date >= start).group_by(Measurement.date).order_by(Measurement.date).all()
     # close the session
     session.close()
-    # list comprehension to get a list of dictionaries including the date, TMIN, TMAX, and TAVG
-    temp_list = [{"Date": result[0], "TMIN": result[1], "TMAX": result[2], "TAVG": result[3]} for result in temp_query]
-    return jsonify(temp_list)
+    # call function to conduct list comprehension to get a list of dictionaries including the date, TMIN, TMAX, and TAVG
+    return jsonify(temp_list_func(temp_query))
 
 
 @app.route("/api/v1.0/<start>/<end>")
@@ -119,19 +131,15 @@ def start_and_end_date(start, end):
     # For a specified start, calculate TMIN, TAVG, and TMAX for 
     # all the dates greater than or equal to the start date.
 
-    # create a variable to contain the data we want to select
-    sel = [Measurement.date,
-    func.min(Measurement.tobs),
-    func.max(Measurement.tobs),
-    func.avg(Measurement.tobs)]
+    # call function to create a variable to contain the data we want to select
+    sel = select_var(Measurement)
     #query for the TMIN, TMAX, and TAVG for the request date and all after
     temp_query = session.query(*sel).filter(Measurement.date >= start).filter(Measurement.date <= end).\
         group_by(Measurement.date).order_by(Measurement.date).all()
     # close the session
     session.close()
-    # list comprehension to get a list of dictionaries including the date, TMIN, TMAX, and TAVG
-    temp_list = [{"Date": result[0], "TMIN": result[1], "TMAX": result[2], "TAVG": result[3]} for result in temp_query]
-    return jsonify(temp_list)
+    # call function to conduct list comprehension to get a list of dictionaries including the date, TMIN, TMAX, and TAVG
+    return jsonify(temp_list_func(temp_query))
 
 
 if __name__ == "__main__":
